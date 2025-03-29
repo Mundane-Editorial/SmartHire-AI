@@ -48,13 +48,14 @@ def process_resume(uploaded_file, job_description):
         # Define ATS prompt
         ats_prompt = """
         You are an AI-powered Applicant Tracking System (ATS).
-        Analyze the given resume against the provided job description.
-        Provide only:
+        Deeply Analyze the given resume against the provided job description.
+        Accurately Provide integer values only for the given queries:
         1. A match percentage (out of 100%).
         2. Candidate's Name.
         3. Candidate's Email.
         4. Candidate's Phone Number.
         5. Candidate's Year of Experience.
+        6. average of 10th, 12th and graduation score.
         """
 
         # Call Gemini AI API
@@ -64,7 +65,7 @@ def process_resume(uploaded_file, job_description):
         print("Received response from Gemini AI.")
 
         # Extracting text from response
-        candidate_data = response.candidates[0].content.parts[0].text  # Extract the text block
+        candidate_data = response.candidates[0].content.parts[0].text  
         print("Extracted candidate data:", candidate_data)
 
         # Parse extracted text
@@ -77,6 +78,7 @@ def process_resume(uploaded_file, job_description):
             "candidate_email": parsed_data.get("3. Candidate's Email", "N/A"),
             "candidate_phone_number": parsed_data.get("4. Candidate's Phone Number", "N/A"),
             "candidate_year_of_experience": parsed_data.get("5. Candidate's Year of Experience", "N/A"),
+            "average_10th_12th_graduation_score": parsed_data.get("6. Average of 10th, 12th and Graduation Score", "N/A")
         }
 
     except Exception as e:
